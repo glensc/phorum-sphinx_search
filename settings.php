@@ -1,7 +1,7 @@
 <?php
     if (!defined("PHORUM_ADMIN")) return;
     
-	require_once("./mods/sphinx_search/defaults.php");
+	require_once 'defaults.php';
 	
     // save settings
     if (count($_POST))
@@ -28,7 +28,7 @@
     <br style="clear:both" />
     <?php
 
-    include_once "./include/admin/PhorumInputForm.php";
+    include_once PHORUM_INCLUDES_DIR.'/admin/PhorumInputForm.php';
     $frm = new PhorumInputForm ("", "post", "Save");
     $frm->hidden("module", "modsettings");
     $frm->hidden("mod", "sphinx_search");
