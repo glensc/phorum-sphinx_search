@@ -84,6 +84,15 @@ function sphinx_search_action($arrSearch)
 
     // do the actual query
     $results = $sphinx->Query($arrSearch['search'],$index);
+
+    $res = $sphinx->GetLastWarning();
+    if ($res) {
+        error_log("sphinx_search.php: WARNING: $res");
+    }
+    $res = $sphinx->GetLastError();
+    if ($res) {
+        error_log("sphinx_search.php: ERROR: $res");
+    }
     
 	// if no messages were found, then return empty handed.
     if (! isset($results["matches"])) {
@@ -104,9 +113,6 @@ function sphinx_search_action($arrSearch)
     krsort($found_messages);
     reset($found_messages);
     
-//    print_r($found_messages);/
-    
-	
     // prepare the array for building highlighted excerpts
     $docs=array();
     foreach($found_messages as $id => $data) {
@@ -123,7 +129,14 @@ function sphinx_search_action($arrSearch)
     // build highlighted excerpts
     $highlighted = $sphinx->BuildExcerpts($docs,$excerpts_index,$words,$opts);
 
-    print $sphinx->GetLastError();
+    $res = $sphinx->GetLastWarning();
+    if ($res) {
+        error_log("sphinx_search.php: WARNING: $res");
+    }
+    $res = $sphinx->GetLastError();
+    if ($res) {
+        error_log("sphinx_search.php: ERROR: $res");
+    }
 
     $cnt=0;
     foreach($found_messages as $id => $content) {
