@@ -30,7 +30,7 @@ function sphinx_search_action($arrSearch)
     // these are the index-names set in sphinx.conf - one for searching messages, the other for searching by authors only
     // both contain an additional index for the deltas - changes done after the last full reindex
     $index_name_msg = "phorum5_msg_d phorum5_msg";
-    $index_name_author = "phorum5_author phorum5_author_delta";
+    $index_name_author = "phorum5_author phorum5_author_d";
     
     // excerpts_index is just one index as that function only accepts one, it used for determining charsets / mapping tables, nothing more
     $excerpts_index = "phorum5_msg";  

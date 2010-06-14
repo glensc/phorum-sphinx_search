@@ -158,7 +158,7 @@ source phorum5_author : phorum5_base
                 WHERE message_id<=( SELECT max_doc_id FROM sph_counter WHERE counter_id=1 and type = 'author' ) and status=2
 }
 
-source phorum5_author_delta : phorum5_base
+source phorum5_author_d : phorum5_base
 {
 
         # main document fetch query
@@ -180,10 +180,10 @@ index phorum5_author : phorum5_base
 
 
 
-index phorum5_author_delta : phorum5_base
+index phorum5_author_d : phorum5_base
 {
-        source = phorum5_author_delta
-        path = /usr/local/sphinx/var/data/phorum5_author_delta
+        source = phorum5_author_d
+        path = /usr/local/sphinx/var/data/phorum5_author_d
 }
 
 
