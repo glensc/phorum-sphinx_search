@@ -21,7 +21,11 @@ function sphinx_search_action($arrSearch)
 {
 	global $PHORUM;
 
-    require_once 'sphinxapi.php';
+	// No pecl class, try php version
+	if (!class_exists('SphinxClient')) {
+		// loads from php include_path
+		require_once 'sphinxapi.php';
+	}
 	
     // these are the index-names set in sphinx.conf - one for searching messages, the other for searching by authors only
     // both contain an additional index for the deltas - changes done after the last full reindex
