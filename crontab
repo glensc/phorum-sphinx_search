@@ -1,4 +1,4 @@
-MAILTO=glen@delfi.ee
+MAILTO=root
 
 # Run nightly. Be sure that they do not run at same time.
 12    03 *  *  * sphinx indexer --config /etc/sphinx/sphinx.conf --rotate --quiet phorum5_msg
