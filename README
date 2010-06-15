@@ -1,6 +1,6 @@
 Module  : Sphinx Search
 Version : 1.0.0
-Author  : Thomas Seiffert, updated by Martijn van Maasakkers <martijn@vanmaasakkers.net>
+Author  : Thomas Seiffert, updated by Martijn van Maasakkers <martijn@vanmaasakkers.net>, Elan Ruusamäe <glen@delfi.ee>
 
 Module for using sphinx as fulltext search-engine instead of phorum built-in search
 sphinx can be downloaded and installed from http://sphinxsearch.com/
@@ -16,15 +16,19 @@ some caveats:
   - data is stored in both phorum_search-table (not needed here) and in the
     sphinx filesystem - this doubles the sizes needed for search even though
     the search-table is not needed. You can clear it out every now and then.
+    you may disable filling phorum_search table by setting
+    $PHORUM['DBCONFIG']['empty_search_table'] to true in db config.
+    but then you need to rebuild search data if you want to go back to mysql
+    fulltext search. you can rebuild search data using admin panel.
   - search-data is not updated in real-time - sphinx reindexes the data if the indexer
     is called for the index, which does a full reindexing of the sphinx index.
     There is a workaround available in sphinx http://sphinxsearch.com/doc.html#live-updates
     which works essentially with two indexes. A large one and smaller one with only the deltas
-    to the full index and which can be reindexed therefore more often, but I don't use that method yet.
+    to the full index and which can be reindexed therefore more often.
     Still, its not realtime.
     For me the full indexing of 350,000 messages took around 5 minutes.
     I'd run the full indexing around once a day with those times.
-
+    See crontab file for sample crontab setup, install it to /etc/cron.d/phorum-sphinx-search
 
 Before you can run a search through sphinx you will need to setup sphinx correctly and do at least one full
 indexing of your phorum-data.
@@ -40,154 +44,6 @@ If you change the index names you will need to change them in the sphinx_search 
 ATTENTION: 
 
 The delta indexes require MySQL-4.1 or higher because of the use of subqueries and they need a separate table 
-for holding the last indexed ID, its structure is the following (install in phorum database):
+for holding the last indexed ID, its structure is the following (install in phorum database). see sph_counter.sql file.
 
-CREATE TABLE sph_counter (
-  counter_id int(11) unsigned NOT NULL default '0',
-  `type` enum('author','message') NOT NULL default 'message',
-  max_doc_id int(11) NOT NULL,
-  PRIMARY KEY  (counter_id,`type`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-
-
-Example (working) sphinx config. Make sure to AT LEAST change the database settings
--------------------------------------------------------------------------------------
-source phorum5_base
-{
-        # data source type
-        # for now, known types are 'mysql' and 'xmlpipe'
-        # MUST be defined
-        type                            = mysql
-
-        # whether to strip HTML
-        strip_html                      = 0
-
-        # what HTML attributes to index if stripping HTML
-        index_html_attrs        =
-
-        #################################################################
-
-        # some straightforward parameters for 'mysql' source type
-        sql_host                = localhost
-        sql_user                = username
-        sql_pass                = password
-        sql_db                  = database
-        sql_port                = 3306    # optional, default is 3306
-
-
-        # optional, default is empty
-        sql_group_column        = forum_id
-        sql_date_column         = datestamp
-
-
-}
-
-index phorum5_base
-{
-
-        # morphology
-        # default is not to use any
-        morphology              = none
-
-        # stopwords file
-        stopwords               =
-
-        # minimum word length
-        min_word_len            = 1
-
-        # charset encoding type
-        # known types are 'sbcs' (Single Byte CharSet) and 'utf-8'
-        charset_type            = sbcs
-
-        path                    = /usr/local/sphinx/var/data/foo
-
-}
-
-source phorum5_msg : phorum5_base
-{
-        sql_query_pre           = REPLACE INTO sph_counter SELECT 1, 'message', MAX(message_id) FROM phorum_messages WHERE status=2
-        sql_query               = \
-                SELECT message_id, forum_id, datestamp, author, subject, body \
-                FROM phorum_messages \
-                WHERE message_id<=( SELECT max_doc_id FROM sph_counter WHERE counter_id=1 and type = 'message' ) and status=2
-
-}
-source phorum5_msg_delta : phorum5_base
-{
-
-        # main document fetch query
-        # you can specify any number of fields
-        #
-        # mandatory
-        sql_query               = \
-                SELECT message_id, forum_id, datestamp, author, subject, body \
-                FROM phorum_messages \
-                WHERE message_id>( SELECT max_doc_id FROM sph_counter WHERE counter_id=1 and type = 'message' ) and status=2
-
-}
-
-index phorum5_msg : phorum5_base
-{
-        # which document source to index
-        source                  = phorum5_msg
-
-        # this is path and index file name without extension
-        # files <indexpath>.spi/spd/spr will be created by indexer
-        path                    = /usr/local/sphinx/var/data/phorum5_msg
-
-}
-
-index phorum5_msg_d : phorum5_base
-{
-        # which document source to index
-        source                  = phorum5_msg_delta
-
-        # this is path and index file name without extension
-        # files <indexpath>.spi/spd/spr will be created by indexer
-        path                    = /usr/local/sphinx/var/data/phorum5_msg_d
-
-}
-
-source phorum5_author : phorum5_base
-{
-        sql_query_pre           = REPLACE INTO sph_counter SELECT 1, 'author', MAX(message_id) FROM phorum_messages WHERE status=2
-        sql_query               = \
-                SELECT message_id, forum_id, datestamp, author \
-                FROM p50_000001_messages \
-                WHERE message_id<=( SELECT max_doc_id FROM sph_counter WHERE counter_id=1 and type = 'author' ) and status=2
-}
-
-source phorum5_author_d : phorum5_base
-{
-
-        # main document fetch query
-        # you can specify any number of fields
-        #
-        # mandatory
-        sql_query               = \
-                SELECT message_id, forum_id, datestamp, author \
-                FROM phorum_messages \
-                WHERE message_id>( SELECT max_doc_id FROM sph_counter WHERE counter_id=1 and type = 'author' ) and status=2
-
-}
-
-index phorum5_author : phorum5_base
-{
-        source = phorum5_author
-        path = /usr/local/sphinx/var/data/phorum5_author
-}
-
-
-
-index phorum5_author_d : phorum5_base
-{
-        source = phorum5_author_d
-        path = /usr/local/sphinx/var/data/phorum5_author_d
-}
-
-
-
----------------------------------------------------------------------------------------------
-
-
+For Sample (working) sphinx config see sphinx.conf. Make sure to AT LEAST change the database settings.
