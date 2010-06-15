@@ -8,6 +8,4 @@ if (! isset($GLOBALS["PHORUM"]["mod_sphinx_search"]["hostname"]))
     $GLOBALS["PHORUM"]["mod_sphinx_search"]["hostname"] = "127.0.0.1";
 
 if (! isset($GLOBALS["PHORUM"]["mod_sphinx_search"]["port"]))
-    $GLOBALS["PHORUM"]["mod_sphinx_search"]["port"] = 3312;
-
-?>
+    $GLOBALS["PHORUM"]["mod_sphinx_search"]["port"] = 9312;

@@ -35,5 +35,5 @@
     $frm->addbreak("Hostname and port");
 
     $row = $frm->addrow("What is the hostname of the sphinx daemon? (e.g. 127.0.0.1)$warn", $frm->text_box("hostname", $PHORUM["mod_sphinx_search"]["hostname"], 30));
-    $row = $frm->addrow("What is the port of the sphinx daemon? (e.g. 3312)$warn", $frm->text_box("port", $PHORUM["mod_sphinx_search"]["port"], 30));
+    $row = $frm->addrow("What is the port of the sphinx daemon? (e.g. 9312)$warn", $frm->text_box("port", $PHORUM["mod_sphinx_search"]["port"], 30));
     $frm->show();
