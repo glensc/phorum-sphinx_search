@@ -74,7 +74,11 @@ function sphinx_search_action($arrSearch)
 	// If the user is not allowed to search any forum or the current
 	// active forum, then return the emtpy search results array.
 	if (empty($allowed_forums) || ($PHORUM['forum_id']>0 && !in_array($PHORUM['forum_id'], $allowed_forums))) {
-		return array('count' => 0, 'rows' => array());
+        $arrSearch['results'] = array();
+        $arrSearch['totals'] = 0;
+        $arrSearch['continue'] = 0;
+        $arrSearch['raw_body'] = 1;
+        return $arrSearch;
 	}
 
 	// Prepare forum_id restriction.
