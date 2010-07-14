@@ -51,7 +51,8 @@ function sphinx_search_action($arrSearch)
             return $arrSearch;
     }
     
-    $sphinx = new SphinxClient($PHORUM["mod_sphinx_search"]["hostname"], $PHORUM["mod_sphinx_search"]["port"]);
+    $sphinx = new SphinxClient();
+    $sphinx->SetServer($PHORUM["mod_sphinx_search"]["hostname"], $PHORUM["mod_sphinx_search"]["port"]);
     $sphinx->SetMatchMode($match_mode);
     
     // set the limits for paging
