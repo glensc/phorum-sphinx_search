@@ -66,23 +66,29 @@ function sphinx_search_action($arrSearch)
 
     }
 
-    // add the forum(s) to search
-    if($arrSearch['match_forum'] == 'THISONE') {
-		$forumid_clean = (int)$PHORUM['forum_id'];
-		$sphinx->SetFilter ( "forum_id", array($forumid_clean) );
+	// Check what forums the active Phorum user can read.
+	$allowed_forums = phorum_api_user_check_access(
+		PHORUM_USER_ALLOW_READ, PHORUM_ACCESS_LIST
+	);
 
-    } else {
+	// If the user is not allowed to search any forum or the current
+	// active forum, then return the emtpy search results array.
+	if (empty($allowed_forums) || ($PHORUM['forum_id']>0 && !in_array($PHORUM['forum_id'], $allowed_forums))) {
+		return array('count' => 0, 'rows' => array());
+	}
 
-        // have to check what forums they can read first.
-		// $allowed_forums=phorum_user_access_list(PHORUM_USER_ALLOW_READ);
-//		$allowed_forums=phorum_user_access_list(PHORUM_USER_ALLOW_READ);
-		$allowed_forums = phorum_api_user_check_access(PHORUM_USER_ALLOW_READ, PHORUM_ACCESS_LIST);
-		
-        // if they are not allowed to search any forums, return the emtpy $arr;
-        if(empty($allowed_forums) || ($PHORUM['forum_id']>0 && !in_array($PHORUM['forum_id'], $allowed_forums)) ) return $arr;
-
-		$sphinx->SetFilter ( "forum_id", $allowed_forums );
-    }
+	// Prepare forum_id restriction.
+	$search_forums = array();
+	foreach (explode(',', $arrSearch['match_forum']) as $forum_id) {
+		if ($forum_id == 'ALL') {
+			$search_forums = $allowed_forums;
+			break;
+		}
+		if (isset($allowed_forums[$forum_id])) {
+			$search_forums[] = $forum_id;
+		}
+	}
+	$sphinx->SetFilter("forum_id", $search_forums);
     
     // set the sort-mode
     $sphinx->SetSortMode(SPH_SORT_ATTR_DESC,"datestamp");
