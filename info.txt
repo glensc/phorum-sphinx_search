@@ -1,0 +1,7 @@
+title: Sphinx Fulltext-Search Module
+desc: This module uses the sphinx fulltext search engine to gather the results of the phorum-search
+version: 1.0.0
+author: Thomas Seiffert, updated by Martijn van Maasakkers
+url: http://www.startpagina.nl
+
+hook:  search_action|sphinx_search_action
