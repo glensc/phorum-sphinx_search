@@ -1,5 +1,11 @@
 Changelog:
 ----------
+
+2010-07-25 v1.1 by Elan Ruusamäe <glen@delfi.ee>
+	- Update to work with recent phorum 5.2.14a and Sphinx 0.9.9
+	- Added support for using sphinx pure PHP API and PHP PECL API
+	- More complete crontab, sql and config files
+	- Added info how to avoid filling original MySQL search database
 			
 2009-03-05 v1.0.0 by Martijn van Maasakkers (martijn@vanmaasakkers.net)
 	- Mar 05, 2009 
