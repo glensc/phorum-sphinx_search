@@ -52,6 +52,11 @@ function sphinx_search_action($arrSearch)
 			return $arrSearch;
 	}
 
+	if (empty($arrSearch['search']) && !empty($arrSearch['author'])) {
+		$arrSearch['search'] = $arrSearch['author'];
+		$index = $index_name_author;
+	}
+
 	$sphinx = new SphinxClient();
 	$sphinx->SetServer($PHORUM['mod_sphinx_search']['hostname'], $PHORUM['mod_sphinx_search']['port']);
 	$sphinx->SetMatchMode($match_mode);
