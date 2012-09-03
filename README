@@ -1,5 +1,5 @@
 Module  : Sphinx Search
-Version : 1.1
+Version : 1.1.1
 Author  : Thomas Seiffert, updated by Martijn van Maasakkers <martijn@vanmaasakkers.net>, Elan Ruusamäe <glen@delfi.ee>
 
 Module for using sphinx as fulltext search-engine instead of phorum built-in search
@@ -41,9 +41,14 @@ You will need to change *AT LEAST* the database settings, i.e. username, passwor
 the table name for the messages table used.
 If you change the index names you will need to change them in the sphinx_search too.
 
-ATTENTION: 
+ATTENTION:
 
-The delta indexes require MySQL-4.1 or higher because of the use of subqueries and they need a separate table 
+The delta indexes require MySQL-4.1 or higher because of the use of subqueries and they need a separate table
 for holding the last indexed ID, its structure is the following (install in phorum database). see sph_counter.sql file.
 
 For Sample (working) sphinx config see sphinx.conf. Make sure to AT LEAST change the database settings.
+
+KNOWN ISSUES:
+It is not currently possible to search by author and by messages at the same
+time. Search is performed either from phorum5_msg or phorum5_author sphinx
+indexes.
