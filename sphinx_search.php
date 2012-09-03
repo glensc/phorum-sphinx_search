@@ -137,7 +137,10 @@ function sphinx_search_action($arrSearch)
 		$docs[] = htmlspecialchars(phorum_strip_body($data['body']));
 	}
 
-	$words = implode(' ', array_keys($results['words']));
+	$words = '';
+	if (!empty($results['words'])) {
+		$words = implode(' ', array_keys($results['words']));
+	}
 
 	$opts = array('chunk_separator'=>' [...] ');
 
