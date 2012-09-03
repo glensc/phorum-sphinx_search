@@ -1,39 +1,41 @@
 Changelog:
 ----------
+2012-09-03 v1.1.1 by Elan Ruusamäe <glen@delfi.ee>
+	- Allow users to search by author when they leave search keyword empty. PR#1.
 
 2010-07-25 v1.1 by Elan Ruusamäe <glen@delfi.ee>
 	- Update to work with recent phorum 5.2.14a and Sphinx 0.9.9
 	- Added support for using sphinx pure PHP API and PHP PECL API
 	- More complete crontab, sql and config files
 	- Added info how to avoid filling original MySQL search database
-			
+
 2009-03-05 v1.0.0 by Martijn van Maasakkers (martijn@vanmaasakkers.net)
-	- Mar 05, 2009 
+	- Mar 05, 2009
 	- Update version for use with PHORUM 5.2
 	- Added settings page where you can set the hostname and port of the sphinx daemon
 
 2007-04-24 v0.9.2 by Thomas Seifert (thomas@phorum.org)
-       - limited results to 1000
-       - some security for the forum_id
+	- limited results to 1000
+	- some security for the forum_id
 
 2006-12-02 v0.9.1 by Thomas Seifert (thomas@phorum.org)
-       - Updated to sphinx 0.9.7, added delta indexes and a host-ip
-     
+	- Updated to sphinx 0.9.7, added delta indexes and a host-ip
+
 2006-10-13 v0.9 by Maurice Makaay (maurice@phorum.org)
-     - Return search control to the Phorum search script in case an
-       unhandled type of search is encountered (e.g. the USER_ID search
-       type for Phorum 5.2).
-       
+	- Return search control to the Phorum search script in case an
+	  unhandled type of search is encountered (e.g. the USER_ID search
+	  type for Phorum 5.2).
+
 2006-09-13 v0.8 by Maurice Makaay (maurice@phorum.org)
-     - little hack in SetGroups of the sphinxapi.php script to not deny
-       group 0 (is_int(0) is false, but we can have 0 for announcements)
-     - if no results are found, return empty results immediately (before,
-       no results would trigger undefined index warnings)
-     - changed example config in README to use settings inheritance
+	- little hack in SetGroups of the sphinxapi.php script to not deny
+	  group 0 (is_int(0) is false, but we can have 0 for announcements)
+	- if no results are found, return empty results immediately (before,
+	  no results would trigger undefined index warnings)
+	- changed example config in README to use settings inheritance
 
 2006-09-07 v0.7
-     - received some more testing and hence ...
-     - fix for date-order
+	- received some more testing and hence ...
+	- fix for date-order
 
-2006-07-13 v0.5  
- 	- first implementation, without admin interface
+2006-07-13 v0.5
+	- first implementation, without admin interface
