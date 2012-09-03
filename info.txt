@@ -1,6 +1,6 @@
 title: Sphinx Fulltext-Search Module
 desc: This module uses the sphinx fulltext search engine to gather the results of the phorum-search
-version: 1.1
+version: 1.1.1
 author: Thomas Seiffert, updated by Martijn van Maasakkers, Elan Ruusamäe
 url: http://github.com/glensc/phorum-sphinx_search
 

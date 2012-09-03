@@ -10,7 +10,7 @@
  * update for Phorum 5.2 by Martijn van Maasakkers (martijn@vanmaasakkers.net)
  * more fixes/improvements by Elan Ruusamäe <glen@delfi.ee>
  *
- * see README for version history
+ * See Changelog for version history
  *
  */
 
