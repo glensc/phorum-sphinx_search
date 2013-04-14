@@ -1,5 +1,8 @@
 Changelog:
 ----------
+2013-04-14 v1.1.2 by Elan Ruusamäe <glen@delfi.ee>
+	- Restore original Phorum compatibility
+
 2012-09-03 v1.1.1 by Elan Ruusamäe <glen@delfi.ee>
 	- Allow users to search by author when they leave search keyword empty. PR#1.
 

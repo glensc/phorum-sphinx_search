@@ -1,6 +1,9 @@
 <?php
 
 if (!defined("PHORUM_ADMIN")) return;
+if (!defined('PHORUM_INCLUDES_DIR')) {
+	define('PHORUM_INCLUDES_DIR', './include'):
+}
 
 require_once 'defaults.php';
 

@@ -1,5 +1,5 @@
 Module  : Sphinx Search
-Version : 1.1.1
+Version : 1.1.2
 Author  : Thomas Seiffert, updated by Martijn van Maasakkers <martijn@vanmaasakkers.net>, Elan Ruusamäe <glen@delfi.ee>
 
 Module for using sphinx as fulltext search-engine instead of phorum built-in search
